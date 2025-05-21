@@ -15,7 +15,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 from pathlib import Path
 
-ALLOWED_HOSTS = ['.onrender.com']  # cho phép tất cả tên miền con của onrender.com
+ALLOWED_HOSTS = ['*']
+
 
 
 MEDIA_URL = '/media/'
