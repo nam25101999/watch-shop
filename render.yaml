@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: watchshop
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: |
+      ./migrate.sh &&
+      python manage.py collectstatic --noinput &&
+      gunicorn watchshop.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: watchshop.settings
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: SECRET_KEY
+        value: hoainamnebanoi
+      - key: DEBUG
+        value: 'False'
+      - key: ALLOWED_HOSTS
+        value: watch-shop-5ch9.onrender.com
+      - key: DATABASE_URL
+        value: postgresql://admin:NUa4XItaAEcD8npAuQf0RCORo3zxaesi@dpg-d0n2jj56ubrc73a1n4pg-a.oregon-postgres.render.com/watchshop_db
+
