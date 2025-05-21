@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Chi tiết đơn hàng #{{ order.id }}{% endblock %}
+
+{% block content %}
+<h1>Chi tiết đơn hàng #{{ order.id }}</h1>
+<p>Ngày tạo: {{ order.created_at }}</p>
+<p>Trạng thái: {{ order.get_status_display }}</p>
+<p>Phương thức thanh toán: {{ order.payment_method }}</p>
+<p>Địa chỉ giao hàng: {{ order.shipping_address }}</p>
+<p>Tổng tiền: {{ order.total }}₫</p>
+
+<h2>Chi tiết sản phẩm:</h2>
+<ul>
+  {% for item in order.items.all %}
+  <li>
+    {{ item.product.name }} - Số lượng: {{ item.quantity }} - Giá: {{ item.price }}₫
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Danh mục sản phẩm{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-6">Danh mục sản phẩm</h1>
+
+<ul class="list-disc pl-6 space-y-2">
+  {% for category in categories %}
+    <li>{{ category.name }}</li>
+  {% empty %}
+    <li>Chưa có danh mục nào.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

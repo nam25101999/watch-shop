@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Danh sách thương hiệu{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-6">Danh sách thương hiệu</h1>
+
+<ul class="list-disc pl-6 space-y-2">
+  {% for brand in brands %}
+    <li><strong>{{ brand.name }}</strong>{% if brand.origin %} - Xuất xứ: {{ brand.origin }}{% endif %}</li>
+  {% empty %}
+    <li>Chưa có thương hiệu nào.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

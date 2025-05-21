@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Danh sách sản phẩm{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-6">Danh sách sản phẩm</h1>
+
+<!-- Bộ lọc sản phẩm -->
+<form method="get" class="mb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+  <select name="brand" class="border p-2 rounded">
+    <option value="">Thương hiệu</option>
+    {% for brand in brands %}
+      <option value="{{ brand.id }}" {% if request.GET.brand == brand.id|stringformat:"s" %}selected{% endif %}>
+        {{ brand.name }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <select name="category" class="border p-2 rounded">
+    <option value="">Danh mục</option>
+    {% for category in categories %}
+      <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+        {{ category.name }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <select name="gender" class="border p-2 rounded">
+    <option value="">Giới tính</option>
+    <option value="male" {% if request.GET.gender == "male" %}selected{% endif %}>Nam</option>
+    <option value="female" {% if request.GET.gender == "female" %}selected{% endif %}>Nữ</option>
+    <option value="unisex" {% if request.GET.gender == "unisex" %}selected{% endif %}>Unisex</option>
+  </select>
+
+  <div class="flex gap-2">
+    <input type="number" name="min_price" placeholder="Giá từ" value="{{ request.GET.min_price }}" class="border p-2 w-1/2 rounded" />
+    <input type="number" name="max_price" placeholder="Đến" value="{{ request.GET.max_price }}" class="border p-2 w-1/2 rounded" />
+  </div>
+
+  <div class="col-span-full">
+    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Lọc</button>
+    <a href="{% url 'products:product_list' %}" class="ml-4 text-blue-600 underline">Xóa bộ lọc</a>
+  </div>
+</form>
+
+<!-- Danh sách sản phẩm -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+  {% for product in products %}
+  <div class="border rounded-lg p-4 shadow hover:shadow-lg transition">
+    <a href="{% url 'products:product_detail' product.slug %}">
+      {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover rounded-md mb-2" />
+      {% else %}
+        <img src="{% static 'images/no-image.png' %}" alt="No image" class="w-full h-48 object-cover rounded-md mb-2" />
+      {% endif %}
+      <h2 class="text-xl font-semibold">{{ product.name }}</h2>
+    </a>
+    <p class="text-yellow-600 font-bold mt-1">
+      {% if product.discount_price %}
+        <span class="line-through text-gray-400 mr-2">{{ product.price }}₫</span>
+        {{ product.discount_price }}₫
+      {% else %}
+        {{ product.price }}₫
+      {% endif %}
+    </p>
+  </div>
+  {% empty %}
+    <p>Không tìm thấy sản phẩm phù hợp.</p>
+  {% endfor %}
+</div>
+{% endblock %}

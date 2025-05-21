@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Liên hệ{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-4 text-blue-800">Liên hệ với chúng tôi</h1>
+  <p class="mb-4 text-lg">Bạn có thắc mắc, phản hồi hay cần hỗ trợ? Hãy gửi thông tin cho chúng tôi qua biểu mẫu dưới đây:</p>
+
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    <div>
+      <label class="block font-medium">Họ và tên:</label>
+      <input type="text" name="name" required class="w-full border rounded p-2" />
+    </div>
+    <div>
+      <label class="block font-medium">Email:</label>
+      <input type="email" name="email" required class="w-full border rounded p-2" />
+    </div>
+    <div>
+      <label class="block font-medium">Nội dung:</label>
+      <textarea name="message" rows="4" required class="w-full border rounded p-2"></textarea>
+    </div>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Gửi</button>
+  </form>
+</div>
+{% endblock %}

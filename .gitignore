@@ -1,0 +1,60 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Cấu hình môi trường ảo (virtualenv)
+venv/
+env/
+.venv/
+.env/
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+static/
+
+# Nếu bạn có các file tạm hoặc cache
+*.swp
+*.swo
+*.bak
+*.orig
+*.tmp
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# Các file môi trường hoặc config cá nhân
+*.env
+.env.*
+
+# Các file build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Caches
+__pycache__/
+*.pytest_cache/
+.pytest_cache/
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+Thumbs.db

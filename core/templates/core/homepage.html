@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trang chủ - WatchShop</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    {% include "partials/header.html" %}
+
+
+  <main class="container mx-auto px-6 py-8">
+
+    <h2 class="text-4xl font-bold mb-8 text-center text-gray-900">Chào mừng đến với WatchShop</h2>
+
+    <!-- Banner carousel đơn giản -->
+    <div class="relative w-full max-w-5xl mx-auto overflow-hidden rounded-lg shadow-lg">
+      <div class="flex transition-transform duration-500" id="banner-carousel" style="transform: translateX(0);">
+        {% for banner in banners %}
+        <a href="{{ banner.link }}" class="min-w-full block relative">
+          <img src="{{ banner.image.url }}" alt="{{ banner.title }}" class="w-full h-64 object-cover rounded-lg" />
+          <div class="absolute bottom-4 left-6 bg-yellow-400 text-gray-900 px-4 py-2 rounded shadow">
+            {{ banner.title }}
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+
+      <!-- Controls -->
+      <button id="prevBtn" 
+              class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-full p-2 shadow-md transition-colors">
+        &#10094;
+      </button>
+      <button id="nextBtn" 
+              class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-full p-2 shadow-md transition-colors">
+        &#10095;
+      </button>
+    </div>
+
+    <!-- Giới thiệu ngắn -->
+    <section class="mt-12 text-center max-w-3xl mx-auto text-gray-700">
+      <p class="text-lg leading-relaxed">
+        WatchShop tự hào là địa chỉ cung cấp đồng hồ chính hãng, đa dạng mẫu mã với giá cả hợp lý. Chúng tôi cam kết mang đến cho khách hàng những trải nghiệm mua sắm trực tuyến an toàn và tiện lợi.
+      </p>
+    </section>
+
+  </main>
+  {% include "partials/footer.html" %}
+
+
+  <script>
+    // Simple banner carousel JS
+    const carousel = document.getElementById('banner-carousel');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const totalBanners = {{ banners|length }};
+    let index = 0;
+
+    function updateCarousel() {
+      carousel.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      index = (index - 1 + totalBanners) % totalBanners;
+      updateCarousel();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      index = (index + 1) % totalBanners;
+      updateCarousel();
+    });
+  </script>
+
+</body>
+</html>
