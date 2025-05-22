@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Thông tin cá nhân{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6 text-blue-800">Thông tin cá nhân</h1>
+
+  <p class="mb-2"><strong>Username:</strong> {{ user.username }}</p>
+  <p class="mb-2"><strong>Email:</strong> {{ user.email }}</p>
+  <p class="mb-2"><strong>Phone:</strong> {{ user.phone }}</p>
+  <p class="mb-6"><strong>Address:</strong> {{ user.address }}</p>
+
+  {% if user.avatar %}
+    <img src="{{ user.avatar.url }}" alt="Avatar" class="max-w-[150px] rounded-lg border border-gray-300" />
+  {% else %}
+    <p class="italic text-gray-500">Chưa có avatar</p>
+  {% endif %}
+</div>
+{% endblock %}

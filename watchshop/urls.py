@@ -10,6 +10,7 @@ urlpatterns = [
     path('products/', include('products.urls', namespace='products')),
     path('orders/', include('orders.urls')),
     path('cart/', include('cart.urls')),
+    path('', include('users.urls', namespace='users')),
 ]
 
 # Cấu hình hiển thị media (hình ảnh)
