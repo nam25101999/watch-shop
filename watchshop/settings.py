@@ -1,4 +1,4 @@
-ALLOWED_HOSTS = ['whatshop.pythonanywhere.com']
+ALLOWED_HOSTS = ['nhokvodanh2510.pythonanywhere.com']
 
 from pathlib import Path
 
