@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Chỉnh sửa địa chỉ giao hàng</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Lưu thay đổi</button>
+  </form>
+{% endblock %}

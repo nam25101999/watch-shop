@@ -2,19 +2,36 @@
 {% block title %}Chi tiết đơn hàng #{{ order.id }}{% endblock %}
 
 {% block content %}
-<h1>Chi tiết đơn hàng #{{ order.id }}</h1>
-<p>Ngày tạo: {{ order.created_at }}</p>
-<p>Trạng thái: {{ order.get_status_display }}</p>
-<p>Phương thức thanh toán: {{ order.payment_method }}</p>
-<p>Địa chỉ giao hàng: {{ order.shipping_address }}</p>
-<p>Tổng tiền: {{ order.total }}₫</p>
+<div class="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md space-y-6">
+  <h1 class="text-2xl font-bold text-gray-800">Chi tiết đơn hàng #{{ order.id }}</h1>
 
-<h2>Chi tiết sản phẩm:</h2>
-<ul>
-  {% for item in order.items.all %}
-  <li>
-    {{ item.product.name }} - Số lượng: {{ item.quantity }} - Giá: {{ item.price }}₫
-  </li>
-  {% endfor %}
-</ul>
+  <div class="space-y-2 text-gray-700">
+    <p><span class="font-semibold">Ngày tạo:</span> {{ order.created_at }}</p>
+    <p><span class="font-semibold">Trạng thái:</span> {{ order.get_status_display }}</p>
+    <p><span class="font-semibold">Phương thức thanh toán:</span> {{ order.payment_method }}</p>
+    <p><span class="font-semibold">Tổng tiền:</span> {{ order.total }}₫</p>
+  </div>
+
+  <div class="bg-gray-100 p-4 rounded-lg space-y-2">
+    <h2 class="text-xl font-semibold text-gray-800">Địa chỉ giao hàng:</h2>
+    <p><span class="font-semibold">Người nhận:</span> {{ order.recipient_name }}</p>
+    <p><span class="font-semibold">Số điện thoại:</span> {{ order.phone_number }}</p>
+    <p><span class="font-semibold">Địa chỉ:</span> {{ order.shipping_address }}</p>
+    <p><span class="font-semibold">Phường/Xã:</span> {{ order.ward }}</p>
+    <p><span class="font-semibold">Quận/Huyện:</span> {{ order.district }}</p>
+    <p><span class="font-semibold">Tỉnh/Thành phố:</span> {{ order.city }}</p>
+    <p><span class="font-semibold">Mã bưu chính:</span> {{ order.postal_code }}</p>
+  </div>
+
+  <div class="space-y-2">
+    <h2 class="text-xl font-semibold text-gray-800">Chi tiết sản phẩm:</h2>
+    <ul class="divide-y divide-gray-200">
+      {% for item in order.items.all %}
+      <li class="py-2">
+        <p>{{ item.product.name }} - <span class="text-gray-600">Số lượng:</span> {{ item.quantity }} - <span class="text-gray-600">Giá:</span> {{ item.price }}₫</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
 {% endblock %}

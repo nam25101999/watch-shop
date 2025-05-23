@@ -1,17 +1,12 @@
-ALLOWED_HOSTS = ['watch-shop-5ch9.onrender.com', 'localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = ['whatshop.pythonanywhere.com']
 
 from pathlib import Path
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,11 +22,15 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# settings.py
 
+# Ngôn ngữ mặc định
+LANGUAGE_CODE = 'vi'  # hoặc 'en', tùy bạn
+
+# Bật dịch ngôn ngữ
 USE_I18N = True
 
-LANGUAGE_CODE = 'vi'  # Ngôn ngữ mặc định
-
+# Danh sách ngôn ngữ hỗ trợ
 LANGUAGES = [
     ('vi', 'Tiếng Việt'),
     ('en', 'English'),
@@ -40,6 +39,7 @@ LANGUAGES = [
 LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
+
 
 
 
@@ -77,6 +77,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -86,13 +87,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'watchshop.urls'
 
-import os
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -100,6 +99,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
                 'products.context_processors.menu_processor',
                 'messenger.context_processors.chat_data',
             ],
@@ -119,14 +119,21 @@ from decouple import config
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': config('DB_NAME'),
+#        'USER': config('DB_USER'),
+#        'PASSWORD': config('DB_PASSWORD'),
+#        'HOST': config('DB_HOST'),
+#        'PORT': config('DB_PORT'),
+#    }
+#}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -149,8 +156,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 

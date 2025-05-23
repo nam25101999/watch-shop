@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.i18n import set_language
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -15,6 +16,8 @@ urlpatterns = [
     path('reviews/', include('reviews.urls', namespace='reviews')),
     path('messenger/', include('messenger.urls')),
     path('search/', include('search.urls', namespace='search')),
+    #languege
+    path('i18n/', include('django.conf.urls.i18n')),
 
 
 ]

@@ -1,17 +1,53 @@
 {% extends "base.html" %}
-{% block title %}Danh sách đơn hàng{% endblock %}
+{% load custom_filters %}
+{% load static %}
+{% load humanize %}
+{% block title %}Đơn hàng của bạn{% endblock %}
 
 {% block content %}
-<h1>Danh sách đơn hàng</h1>
-<ul>
-  {% for order in orders %}
-  <li>
-    <a href="{% url 'orders:order_detail' order.id %}">Đơn hàng #{{ order.id }}</a> - 
-    Ngày: {{ order.created_at }} - 
-    Trạng thái: {{ order.get_status_display }}
-  </li>
-  {% empty %}
-    <li>Chưa có đơn hàng nào.</li>
-  {% endfor %}
-</ul>
+<div class="max-w-4xl mx-auto p-4">
+  <h1 class="text-3xl font-bold mb-6">Đơn hàng của bạn</h1>
+
+  {% if orders %}
+    {% for order in orders %}
+      <div class="border border-gray-300 rounded p-4 mb-6 shadow-sm">
+        <h2 class="text-xl font-semibold mb-2">Đơn hàng #{{ order.id }}</h2>
+        <p class="text-gray-600">Ngày đặt: {{ order.created_at|date:"d/m/Y H:i" }}</p>
+
+        <table class="w-full mt-4 border border-gray-200 text-left">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="p-2 border border-gray-200">Sản phẩm</th>
+              <th class="p-2 border border-gray-200">Số lượng</th>
+              <th class="p-2 border border-gray-200">Giá</th>
+              <th class="p-2 border border-gray-200">Tổng</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in order.items.all %}
+              <tr>
+                <td class="p-2 border border-gray-200">{{ item.product.name }}</td>
+                <td class="p-2 border border-gray-200">{{ item.quantity }}</td>
+                <td class="p-2 border border-gray-200">{{ item.price|floatformat:0|intcomma }}₫</td>
+                <td class="p-2 border border-gray-200">{{ item.quantity|multiply:item.price|floatformat:0|intcomma }}₫</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <p class="mt-4 font-semibold text-right">Tổng cộng: 
+          {{ order.items.all|sum_total_price|floatformat:0|intcomma }}₫
+        </p>
+      </div>
+      <a href="{% url 'orders:order_detail' order.id %}">Chi tiết đơn hàng</a>
+      <a href="{% url 'orders:edit_shipping_address' order.id %}">Chỉnh sửa địa chỉ</a>
+
+    {% endfor %}
+    <a href="{% url 'orders:checkout' %}" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded font-semibold">Thanh toán</a>
+  {% else %}
+    <p>Bạn chưa có đơn hàng nào.</p>
+    <a href="{% url 'products:product_list' %}" class="text-blue-600 underline">Tiếp tục mua sắm</a>
+    
+  {% endif %}
+</div>
 {% endblock %}

@@ -57,13 +57,18 @@
     </table>
 
     <div class="mt-6">
-      <a href="{% url 'cart:checkout' %}" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded font-semibold">Thanh toán</a>
       <a href="{% url 'products:product_list' %}" class="ml-4 underline">Tiếp tục mua sắm</a>
+      <a href="{% url 'orders:order_list' %}" class="ml-4 underline">Xem đơn hàng</a>
     </div>
+    <form method="post" action="{% url 'orders:create_order' %}" class="inline">
+      {% csrf_token %}
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded font-semibold">Đặt hàng</button>
+    </form>
   {% else %}
     <p>Giỏ hàng của bạn đang trống.</p>
     <a href="{% url 'products:product_list' %}" class="underline text-blue-600">Quay lại mua sắm</a>
   {% endif %}
+
   
 </div>
 

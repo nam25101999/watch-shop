@@ -16,4 +16,6 @@ def about_view(request):
     return render(request, 'core/abouts.html')
 
 def contact_view(request):
-    return render(request, 'core/contact.html')
+    if request.user.is_authenticated:
+        return render(request, 'core/contact_public.html')
+    return render(request, 'core/contact_public.html')

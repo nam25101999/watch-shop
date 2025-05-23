@@ -70,6 +70,4 @@ def remove_cart_item(request, item_id):
     item.delete()
     return redirect('cart:cart_detail')
 
-def checkout(request):
-    # logic thanh toán
-    return render(request, 'cart/checkout.html')
+

@@ -6,158 +6,202 @@
 {% block content %}
 <h1 class="text-3xl font-bold mb-6">Danh sách sản phẩm</h1>
 
-<!-- Bộ lọc sản phẩm -->
-<form method="get" class="mb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+  <!-- BỘ LỌC BÊN TRÁI -->
+  <div class="md:col-span-1">
+    <form method="get" class="space-y-4">
 
-  <!-- Thương hiệu -->
-  <select name="brand" class="border p-2 rounded">
-    <option value="">Thương hiệu</option>
-    {% for brand in brands %}
-      <option value="{{ brand.id }}" {% if request.GET.brand == brand.id|stringformat:"s" %}selected{% endif %}>
-        {{ brand.name }}
-      </option>
-    {% endfor %}
-  </select>
+    <!-- Thương hiệu -->
+    <div>
+      <h3 class="font-semibold mb-2">Thương hiệu</h3>
+      {% for brand in brands %}
+      <label class="flex items-center space-x-2 mb-1">
+        <input type="checkbox" name="brand" value="{{ brand.id }}" {% if request.GET.brand == brand.id|stringformat:"s" %}checked{% endif %} />
+        <span>{{ brand.name }}</span>
+      </label>
+      {% endfor %}
+    </div>
 
-  <!-- Danh mục -->
-  <select name="category" class="border p-2 rounded">
-    <option value="">Danh mục</option>
-    {% for category in categories %}
-      <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
-        {{ category.name }}
-      </option>
-    {% endfor %}
-  </select>
+    <!-- Mức giá -->
+    <div>
+      <h3 class="font-semibold mb-2">Mức giá</h3>
+      {% for range in price_ranges %}
+      <label class="flex items-center space-x-2 mb-1">
+        <input type="radio" name="price" value="{{ range.id }}" {% if request.GET.price == range.id|stringformat:"s" %}checked{% endif %} />
+        <span>{{ range.label }}</span>
+      </label>
+      {% endfor %}
+    </div>
 
-  <!-- Giới tính -->
-  <select name="gender" class="border p-2 rounded">
-    <option value="">Giới tính</option>
-    <option value="male" {% if request.GET.gender == "male" %}selected{% endif %}>Nam</option>
-    <option value="female" {% if request.GET.gender == "female" %}selected{% endif %}>Nữ</option>
-    <option value="unisex" {% if request.GET.gender == "unisex" %}selected{% endif %}>Unisex</option>
-  </select>
+    <!-- Giới tính -->
+    <div>
+      <h3 class="font-semibold mb-2">Giới tính</h3>
+      <label class="block"><input type="radio" name="gender" value="male" {% if request.GET.gender == "male" %}checked{% endif %}> Nam</label>
+      <label class="block"><input type="radio" name="gender" value="female" {% if request.GET.gender == "female" %}checked{% endif %}> Nữ</label>
+      <label class="block"><input type="radio" name="gender" value="unisex" {% if request.GET.gender == "unisex" %}checked{% endif %}> Unisex</label>
+    </div>
 
-  <!-- Giá -->
-  <div class="flex gap-2">
-    <input type="number" name="min_price" placeholder="Giá từ" value="{{ request.GET.min_price }}" class="border p-2 w-1/2 rounded" />
-    <input type="number" name="max_price" placeholder="Đến" value="{{ request.GET.max_price }}" class="border p-2 w-1/2 rounded" />
-  </div>
+    <!-- Loại máy -->
+    <!-- Bộ máy -->
+    <div>
+      <label class="block font-semibold mb-1">Bộ máy</label>
+      {% for movement in movements %}
+        <label class="flex items-center mb-1">
+          <input type="checkbox" name="movement" value="{{ movement.id }}" {% if request.GET.movement == movement.id|stringformat:"s" %}checked{% endif %} class="mr-2" />
+          {{ movement.name }}
+        </label>
+      {% endfor %}
+    </div>
 
-  <!-- Loại đồng hồ -->
-  <select name="watch_type" class="border p-2 rounded">
-    <option value="">Loại đồng hồ</option>
-    {% for t in watch_types %}
-      <option value="{{ t.id }}" {% if request.GET.watch_type == t.id|stringformat:"s" %}selected{% endif %}>
-        {{ t.name }}
-      </option>
-    {% endfor %}
-  </select>
 
-  <!-- Phong cách -->
-  <select name="style" class="border p-2 rounded">
-    <option value="">Phong cách</option>
-    {% for s in styles %}
-      <option value="{{ s.id }}" {% if request.GET.style == s.id|stringformat:"s" %}selected{% endif %}>
-        {{ s.name }}
-      </option>
-    {% endfor %}
-  </select>
+    <!-- Chất liệu dây -->
+    <div>
+      <h3 class="font-semibold mb-2">Chất liệu dây</h3>
+      {% for material in strap_materials %}
+      <label class="block">
+        <input type="checkbox" name="strap_material" value="{{ material.id }}" {% if request.GET.strap_material == material.id|stringformat:"s" %}checked{% endif %}>
+        {{ material.name }}
+      </label>
+      {% endfor %}
+    </div>
 
-  <!-- Mặt đồng hồ -->
-  <select name="dial" class="border p-2 rounded">
-    <option value="">Mặt đồng hồ</option>
-    {% for d in dials %}
-      <option value="{{ d.id }}" {% if request.GET.dial == d.id|stringformat:"s" %}selected{% endif %}>
-        {{ d.name }}
-      </option>
-    {% endfor %}
-  </select>
+    <!-- Mặt kính -->
+    <div>
+      <h3 class="font-semibold mb-2">Mặt kính</h3>
+      {% for g in glass_types %}
+      <label class="block">
+        <input type="checkbox" name="glass" value="{{ g.id }}" {% if request.GET.glass == g.id|stringformat:"s" %}checked{% endif %}>
+        {{ g.name }}
+      </label>
+      {% endfor %}
+    </div>
 
-  <!-- Chất liệu dây -->
-  <select name="strap_material" class="border p-2 rounded">
-    <option value="">Chất liệu dây</option>
-    {% for s in strap_materials %}
-      <option value="{{ s.id }}" {% if request.GET.strap_material == s.id|stringformat:"s" %}selected{% endif %}>
-        {{ s.name }}
-      </option>
-    {% endfor %}
-  </select>
+    <!-- Đường kính mặt -->
+    <div>
+      <h3 class="font-semibold mb-2">Đường kính mặt</h3>
+      {% for size in case_sizes %}
+      <label class="block">
+        <input type="checkbox" name="case_size" value="{{ size.id }}" {% if request.GET.case_size == size.id|stringformat:"s" %}checked{% endif %}>
+        {{ size.label }}
+      </label>
+      {% endfor %}
+    </div>
 
-  <!-- Màu sắc -->
-  <select name="color" class="border p-2 rounded">
-    <option value="">Màu sắc</option>
-    {% for c in colors %}
-      <option value="{{ c.id }}" {% if request.GET.color == c.id|stringformat:"s" %}selected{% endif %}>
-        {{ c.name }}
-      </option>
-    {% endfor %}
-  </select>
+    <!-- Phiên bản đặc biệt -->
+    <div>
+      <h3 class="font-semibold mb-2">Phiên bản đặc biệt</h3>
+      {% for p in special_versions %}
+      <label class="block">
+        <input type="checkbox" name="special" value="{{ p.id }}" {% if request.GET.special == p.id|stringformat:"s" %}checked{% endif %}>
+        {{ p.name }}
+      </label>
+      {% endfor %}
+    </div>
 
-  <!-- Kháng nước -->
-  <select name="water_resistance" class="border p-2 rounded">
-    <option value="">Kháng nước</option>
-    {% for w in water_resistances %}
-      <option value="{{ w.id }}" {% if request.GET.water_resistance == w.id|stringformat:"s" %}selected{% endif %}>
+    <!-- Mức chống nước -->
+    <div>
+      <h3 class="font-semibold mb-2">Mức chống nước</h3>
+      {% for w in water_resistances %}
+      <label class="block">
+        <input type="checkbox" name="water" value="{{ w.id }}" {% if request.GET.water == w.id|stringformat:"s" %}checked{% endif %}>
         {{ w.name }}
-      </option>
-    {% endfor %}
-  </select>
+      </label>
+      {% endfor %}
+    </div>
 
-  <!-- Sắp xếp -->
-  <select name="sort" class="border p-2 rounded">
-    <option value="">Sắp xếp</option>
-    <option value="name_asc" {% if request.GET.sort == "name_asc" %}selected{% endif %}>Tên A → Z</option>
-    <option value="name_desc" {% if request.GET.sort == "name_desc" %}selected{% endif %}>Tên Z → A</option>
-    <option value="price_asc" {% if request.GET.sort == "price_asc" %}selected{% endif %}>Giá thấp → cao</option>
-    <option value="price_desc" {% if request.GET.sort == "price_desc" %}selected{% endif %}>Giá cao → thấp</option>
-  </select>
+    <!-- Hình dạng mặt số -->
+    <div>
+      <h3 class="font-semibold mb-2">Hình dạng mặt số</h3>
+      {% for h in shapes %}
+      <label class="block">
+        <input type="checkbox" name="shape" value="{{ h.id }}" {% if request.GET.shape == h.id|stringformat:"s" %}checked{% endif %}>
+        {{ h.name }}
+      </label>
+      {% endfor %}
+    </div>
 
-  <!-- Nút lọc -->
-  <div class="col-span-full">
-    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Lọc</button>
-    <a href="{% url 'products:product_list' %}" class="ml-4 text-blue-600 underline">Xóa bộ lọc</a>
+    <!-- Tính năng -->
+    <div>
+      <h3 class="font-semibold mb-2">Tính năng</h3>
+      {% for t in features %}
+      <label class="block">
+        <input type="checkbox" name="feature" value="{{ t.id }}" {% if request.GET.feature == t.id|stringformat:"s" %}checked{% endif %}>
+        {{ t.name }}
+      </label>
+      {% endfor %}
+    </div>
+
+    <!-- Nguồn gốc -->
+    <div>
+      <h3 class="font-semibold mb-2">Nguồn gốc</h3>
+      {% for origin in origins %}
+      <label class="block">
+        <input type="checkbox" name="origin" value="{{ origin.id }}" {% if request.GET.origin == origin.id|stringformat:"s" %}checked{% endif %}>
+        {{ origin.name }}
+      </label>
+      {% endfor %}
+    </div>
+
+    <!-- Sắp xếp -->
+    <div>
+      <h3 class="font-semibold mb-2">Sắp xếp</h3>
+      <select name="sort" class="w-full p-2 border rounded">
+        <option value="">-- Chọn --</option>
+        <option value="name_asc" {% if request.GET.sort == "name_asc" %}selected{% endif %}>Tên A → Z</option>
+        <option value="name_desc" {% if request.GET.sort == "name_desc" %}selected{% endif %}>Tên Z → A</option>
+        <option value="price_asc" {% if request.GET.sort == "price_asc" %}selected{% endif %}>Giá thấp → cao</option>
+        <option value="price_desc" {% if request.GET.sort == "price_desc" %}selected{% endif %}>Giá cao → thấp</option>
+      </select>
+    </div>
+
+    <!-- Nút lọc -->
+    <div>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white w-full px-4 py-2 rounded">Lọc</button>
+        <a href="{% url 'products:product_list' %}" class="block text-center text-blue-600 underline mt-2">Xóa bộ lọc</a>
+      </div>
+    </form>
   </div>
-</form>
 
 
-<!-- Danh sách sản phẩm -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-  {% for product in products %}
-  <div class="border rounded-lg p-4 shadow transition-transform duration-300 hover:shadow-lg hover:scale-105">
-    <a href="{% url 'products:product_detail' product.slug %}">
-      {% if product.image %}
-        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover rounded-md mb-2" />
-      {% else %}
-        <img src="{% static 'images/no-image.png' %}" alt="No image" class="w-full h-48 object-cover rounded-md mb-2" />
+<!-- DANH SÁCH SẢN PHẨM BÊN PHẢI -->
+  <div class="md:col-span-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for product in products %}
+        <div class="border rounded-lg p-4 shadow transition-transform duration-300 hover:shadow-lg hover:scale-105">
+          <a href="{% url 'products:product_detail' product.slug %}">
+            {% if product.image %}
+              <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover rounded-md mb-2" />
+            {% else %}
+              <img src="{% static 'images/no-image.png' %}" alt="No image" class="w-full h-48 object-cover rounded-md mb-2" />
+            {% endif %}
+            <h2 class="text-xl font-semibold">{{ product.name }}</h2>
+          </a>
+          <p class="text-yellow-600 font-bold mt-1">
+            {% if product.discount_price %}
+              <span class="line-through text-gray-400 mr-2">{{ product.price }}₫</span>
+              {{ product.discount_price }}₫
+            {% else %}
+              {{ product.price }}₫
+            {% endif %}
+          </p>
+        </div>
+      {% empty %}
+        <p>Không tìm thấy sản phẩm phù hợp.</p>
+      {% endfor %}
+    </div>
+
+    <!-- PHÂN TRANG -->
+    <div class="mt-6 flex justify-center space-x-3">
+      {% if products.has_previous %}
+        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ products.previous_page_number }}" class="px-3 py-1 border rounded">Trang trước</a>
       {% endif %}
-      <h2 class="text-xl font-semibold">{{ product.name }}</h2>
-    </a>
-    <p class="text-yellow-600 font-bold mt-1">
-      {% if product.discount_price %}
-        <span class="line-through text-gray-400 mr-2">{{ product.price }}₫</span>
-        {{ product.discount_price }}₫
-      {% else %}
-        {{ product.price }}₫
+      <span class="px-3 py-1 border rounded bg-gray-200">{{ products.number }} / {{ products.paginator.num_pages }}</span>
+      {% if products.has_next %}
+        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ products.next_page_number }}" class="px-3 py-1 border rounded">Trang sau</a>
       {% endif %}
-    </p>
+    </div>
   </div>
-  {% empty %}
-    <p>Không tìm thấy sản phẩm phù hợp.</p>
-  {% endfor %}
 </div>
-
-<div class="mt-6 flex justify-center space-x-3">
-  {% if products.has_previous %}
-    <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ products.previous_page_number }}" class="px-3 py-1 border rounded">Trang trước</a>
-  {% endif %}
-
-  <span class="px-3 py-1 border rounded bg-gray-200">{{ products.number }} / {{ products.paginator.num_pages }}</span>
-
-  {% if products.has_next %}
-    <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ products.next_page_number }}" class="px-3 py-1 border rounded">Trang sau</a>
-  {% endif %}
-</div>
-
 {% endblock %}
 
 <script>

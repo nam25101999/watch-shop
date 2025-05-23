@@ -64,3 +64,4 @@ Thumbs.db
 scrape_watchstore.py
 load_products.py
 chromedriver.exe
+products.json
