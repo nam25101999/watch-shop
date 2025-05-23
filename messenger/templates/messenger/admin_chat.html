@@ -1,0 +1,31 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Chat với {{ chat_user.username }}</h2>
+
+<div style="height: 400px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; background: #f9f9f9;">
+  {% for message in messages %}
+    <div style="margin-bottom: 10px;
+      {% if message.sender == request.user %}
+        background-color: #d1e7dd; padding: 5px; border-radius: 5px; text-align: right;
+      {% else %}
+        background-color: #f8d7da; padding: 5px; border-radius: 5px; text-align: left;
+      {% endif %}
+    ">
+      <b>{{ message.sender.username }}:</b> {{ message.content }}<br>
+      <small>{{ message.timestamp|date:"d/m/Y H:i" }}</small>
+    </div>
+  {% empty %}
+    <p>Không có tin nhắn nào.</p>
+  {% endfor %}
+</div>
+
+<p>Tổng tin nhắn: {{ messages.count }}</p>
+
+<form method="post" style="margin-top: 10px;">
+  {% csrf_token %}
+  <textarea name="content" rows="3" style="width: 100%;" placeholder="Nhập tin nhắn..."></textarea>
+  <button type="submit" class="btn btn-primary mt-2">Gửi</button>
+</form>
+{% endblock %}

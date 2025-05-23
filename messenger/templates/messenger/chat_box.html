@@ -1,0 +1,78 @@
+{% load static %}
+
+<!-- Nút mở chat -->
+<div id="chat-toggle-btn" class="fixed bottom-4 right-4 z-50 bg-yellow-500 text-white p-3 rounded-full shadow-lg cursor-pointer hover:bg-yellow-600">
+  💬
+</div>
+
+<!-- Hộp chat -->
+<div id="chat-container" class="fixed bottom-20 right-4 z-50 w-80 bg-white border rounded-lg shadow-lg hidden flex flex-col">
+  <!-- Header -->
+  <div class="p-3 border-b bg-yellow-100 flex justify-between items-center">
+    <span class="font-bold">Nhắn tin với Shop</span>
+    <button id="chat-close-btn" class="text-gray-600 hover:text-red-500 font-bold text-xl leading-none">&times;</button>
+  </div>
+
+  <!-- Tin nhắn -->
+    <div id="chat-box" class="p-4 overflow-y-auto bg-gray-100 flex-1 space-y-3 text-sm" style="max-height: 64vh;">
+        {% for msg in messages %}
+            {% if msg.sender == request.user %}
+            <!-- Tin nhắn của chính mình -->
+            <div class="flex items-start justify-end space-x-2 space-x-reverse">
+                <div class="bg-yellow-100 p-2 rounded-lg shadow max-w-[75%] break-words text-right">
+                <div class="font-semibold text-gray-800">{{ msg.sender.username }}</div>
+                <div class="text-gray-700 whitespace-pre-wrap">{{ msg.content }}</div>
+                <small class="text-gray-400 block text-xs mt-1">{{ msg.timestamp|date:"d/m/Y H:i" }}</small>
+                </div>
+                <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                {% if msg.sender.avatar %}
+                    <img src="{{ msg.sender.avatar.url }}" alt="Avatar" class="w-full h-full object-cover">
+                {% else %}
+                    <img src="{% static 'images/default-avatar.png' %}" alt="Default Avatar" class="w-full h-full object-cover">
+                {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <!-- Tin nhắn của người khác -->
+            <div class="flex items-start space-x-2">
+                <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                {% if msg.sender.avatar %}
+                    <img src="{{ msg.sender.avatar.url }}" alt="Avatar" class="w-full h-full object-cover">
+                {% else %}
+                    <img src="{% static 'images/default-avatar.png' %}" alt="Default Avatar" class="w-full h-full object-cover">
+                {% endif %}
+                </div>
+                <div class="bg-white p-2 rounded-lg shadow max-w-[75%] break-words">
+                <div class="font-semibold text-gray-800">{{ msg.sender.username }}</div>
+                <div class="text-gray-700 whitespace-pre-wrap">{{ msg.content }}</div>
+                <small class="text-gray-400 block text-xs mt-1">{{ msg.timestamp|date:"d/m/Y H:i" }}</small>
+                </div>
+            </div>
+            {% endif %}
+        {% empty %}
+            <p class="text-gray-500">Chưa có tin nhắn.</p>
+        {% endfor %}
+    </div>
+
+
+  <!-- Biểu mẫu nhập -->
+  <form id="chat-form" method="POST" class="flex items-center space-x-1 border-t p-2">
+    {% csrf_token %}
+    <input type="hidden" id="receiver_id" name="receiver_id" value="{{ shop_user.id }}">
+    <input type="text" id="message-input" name="content" class="flex-1 border px-2 py-1 rounded text-sm" placeholder="Nhập tin nhắn..." />
+    <!-- Emoji dropdown -->
+    <button type="button" id="emoji-btn" class="text-xl">😊</button>
+    <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm">Gửi</button>
+  </form>
+
+  <!-- Emoji picker -->
+  <div id="emoji-picker" class="hidden absolute bottom-28 right-4 bg-white border rounded shadow p-2 z-50">
+    <div class="grid grid-cols-6 gap-1 text-xl cursor-pointer">
+      😊 😂 😍 😢 😎 😡 ❤️ 👍 🙌 💩 🎉 🤔
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'messenger/chat.js' %}"></script>
+
+

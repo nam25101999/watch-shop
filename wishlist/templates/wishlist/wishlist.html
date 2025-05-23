@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Danh sách yêu thích{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto p-6">
+  <h1 class="text-3xl font-semibold mb-6 text-blue-700">Danh sách yêu thích</h1>
+
+  {% if products %}
+    <ul class="space-y-4">
+      {% for product in products %}
+      <li class="flex items-center justify-between p-4 border rounded shadow hover:shadow-lg transition">
+        <a href="{% url 'products:product_detail' product.slug %}" class="flex items-center space-x-4 flex-grow hover:underline">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-20 h-20 object-cover rounded" />
+          {% endif %}
+          <div>
+            <h2 class="text-xl font-semibold">{{ product.name }}</h2>
+            <p class="text-gray-600">{{ product.description|truncatewords:15 }}</p>
+            <p class="mt-1 text-green-600 font-bold">{{ product.price }}₫</p>
+          </div>
+        </a>
+
+        <div>
+          <a href="{% url 'wishlist:remove_from_wishlist' product.id %}" 
+             class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition">
+             Xóa
+          </a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-gray-500 italic">Bạn chưa có sản phẩm nào trong danh sách yêu thích.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

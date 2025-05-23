@@ -12,9 +12,15 @@
   <p class="mb-6"><strong>Address:</strong> {{ user.address }}</p>
 
   {% if user.avatar %}
-    <img src="{{ user.avatar.url }}" alt="Avatar" class="max-w-[150px] rounded-lg border border-gray-300" />
+    <img src="{{ user.avatar.url }}" alt="Avatar" 
+         class="w-32 h-32 object-cover rounded-lg border border-gray-300" />
   {% else %}
     <p class="italic text-gray-500">Chưa có avatar</p>
   {% endif %}
+  
+  <a href="{% url 'users:update_account' %}" 
+    class="text-blue-600 underline hover:text-blue-800 transition-colors duration-200 font-medium">
+    Chỉnh sửa thông tin
+  </a>
 </div>
 {% endblock %}

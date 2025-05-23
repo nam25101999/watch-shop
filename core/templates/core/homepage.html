@@ -1,3 +1,5 @@
+{% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -5,21 +7,130 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Trang chủ - WatchShop</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css" rel="stylesheet">
+
+  <style>
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 10;
+  }
+  </style>
+  <style>
+  /* Tên lửa bay 1 vòng tròn */
+  @keyframes rocket-circle {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+      opacity: 1;
+    }
+    25% {
+      transform: translate(80px, -80px) rotate(90deg);
+      opacity: 1;
+    }
+    50% {
+      transform: translate(160px, 0) rotate(180deg);
+      opacity: 1;
+    }
+    75% {
+      transform: translate(80px, 80px) rotate(270deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(0, 0) rotate(360deg);
+      opacity: 1;
+    }
+  }
+
+  /* Phóng to và mờ dần */
+  @keyframes rocket-scale-fade {
+    0% { transform: scale(1) translate(0, 0); opacity: 1; }
+    100% { transform: scale(10) translate(0, 0); opacity: 0; }
+  }
+
+  /* Hiện chữ hihi */
+  @keyframes text-fade-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  .rocket-container {
+    position: relative;
+    height: 200px;
+    overflow: visible;
+  }
+
+  .rocket {
+    animation: rocket-circle 2s linear forwards, rocket-scale-fade 1s ease forwards;
+    animation-delay: 0s, 2s;
+    animation-fill-mode: forwards;
+    transform-origin: center center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* bắt đầu ở giữa container */
+    transform: translate(-50%, -50%);
+  }
+
+  .rocket-fire {
+    animation: fire-reverse 0.3s ease-in-out infinite;
+  }
+
+  .text-hihi {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #F59E0B;
+    opacity: 0;
+    animation: text-fade-in 1s ease forwards;
+    animation-delay: 3s; /* sau khi rocket biến mất */
+  }
+
+  @keyframes fire-reverse {
+    0%, 100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(1.5); opacity: 0.6; }
+  }
+</style>
+
+
 </head>
+
 <body class="bg-gray-50">
     {% include "partials/header.html" %}
 
 
   <main class="container mx-auto px-6 py-8">
+  
+    <h2 class="text-4xl font-bold mb-8 text-center text-gray-900">Có tiền mới mua được Đồng hồ !</h2>
+    
+    <div class="rocket-container flex justify-center items-start mb-6 relative">
+      <div class="flex flex-col items-center rocket">
+        <div class="text-5xl rotate-180">🚀</div>
+        <div class="w-2 h-4 bg-orange-500 rounded-full opacity-80 rocket-fire mt-1"></div>
+      </div>
+      <div class="text-hihi">{%Chào mừng đến với WatchShop%}</div>
+    </div>
+    <canvas id="fireworksCanvas"></canvas>
+    <div id="message" 
+        class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                text-yellow-400 text-5xl font-extrabold opacity-0 
+                transition-opacity duration-2000
+                drop-shadow-[0_0_8px_rgba(255,221,0,0.8)]">
+      -------------------
+    </div>
 
-    <h2 class="text-4xl font-bold mb-8 text-center text-gray-900">Chào mừng đến với WatchShop</h2>
 
-    <!-- Banner carousel đơn giản -->
-    <div class="relative w-full max-w-5xl mx-auto overflow-hidden rounded-lg shadow-lg">
+
+    <!-- Banner -->
+    <div class="relative w-full max-w-6xl mx-auto overflow-hidden rounded-lg shadow-lg">
       <div class="flex transition-transform duration-500" id="banner-carousel" style="transform: translateX(0);">
         {% for banner in banners %}
         <a href="{{ banner.link }}" class="min-w-full block relative">
-          <img src="{{ banner.image.url }}" alt="{{ banner.title }}" class="w-full h-64 object-cover rounded-lg" />
+          <img src="{{ banner.image.url }}" alt="{{ banner.title }}" class="w-full object-cover rounded-lg" style="height: 500px;"/>
           <div class="absolute bottom-4 left-6 bg-yellow-400 text-gray-900 px-4 py-2 rounded shadow">
             {{ banner.title }}
           </div>
@@ -38,6 +149,45 @@
       </button>
     </div>
 
+
+    <!-- Ưu điểm nổi bật -->
+    <section class="bg-white border-y border-yellow-300 py-6">
+      <div class="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 text-center text-gray-800">
+        
+        <div class="space-y-1">
+          <div class="text-yellow-500 text-3xl">🛍️</div>
+          <p class="font-semibold">Mẫu mã đa dạng nhất</p>
+          <p class="text-gray-500 text-sm">Hoàn tiền nếu phát hiện bán hàng giả</p>
+        </div>
+
+        <div class="space-y-1">
+          <div class="text-yellow-500 text-3xl">🚚</div>
+          <p class="font-semibold">Miễn phí vận chuyển</p>
+          <p class="text-gray-500 text-sm">Giao hàng nhanh, đóng gói cẩn thận</p>
+        </div>
+
+        <div class="space-y-1">
+          <div class="text-yellow-500 text-3xl">🔄</div>
+          <p class="font-semibold">Đổi hàng 7 ngày</p>
+          <p class="text-gray-500 text-sm">1 đổi 1 trong 7 ngày với sản phẩm lỗi</p>
+        </div>
+
+        <div class="space-y-1">
+          <div class="text-yellow-500 text-3xl">🛠️</div>
+          <p class="font-semibold">Bảo hành 5 năm</p>
+          <p class="text-gray-500 text-sm">Thủ tục nhanh, thay pin miễn phí</p>
+        </div>
+
+        <div class="space-y-1">
+          <div class="text-yellow-500 text-3xl">💳</div>
+          <p class="font-semibold">Đeo trước trả sau</p>
+          <p class="text-gray-500 text-sm">Trả trước 1 phần, còn lại trả sau</p>
+        </div>
+
+      </div>
+    </section>
+
+
     <!-- Giới thiệu ngắn -->
     <section class="mt-12 text-center max-w-3xl mx-auto text-gray-700">
       <p class="text-lg leading-relaxed">
@@ -46,31 +196,9 @@
     </section>
 
   </main>
+  {% include 'messenger/chat_box.html' %}
   {% include "partials/footer.html" %}
 
-
-  <script>
-    // Simple banner carousel JS
-    const carousel = document.getElementById('banner-carousel');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const totalBanners = {{ banners|length }};
-    let index = 0;
-
-    function updateCarousel() {
-      carousel.style.transform = `translateX(-${index * 100}%)`;
-    }
-
-    prevBtn.addEventListener('click', () => {
-      index = (index - 1 + totalBanners) % totalBanners;
-      updateCarousel();
-    });
-
-    nextBtn.addEventListener('click', () => {
-      index = (index + 1) % totalBanners;
-      updateCarousel();
-    });
-  </script>
-
+<script src="{% static 'js/core.js' %}"></script>
 </body>
 </html>

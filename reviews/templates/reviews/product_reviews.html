@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="max-w-4xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-4">Đánh giá sản phẩm: {{ product.name }}</h1>
+
+    <a href="{% url 'add_review' product.id %}" class="inline-block mb-6 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+      Thêm đánh giá
+    </a>
+
+    {% if reviews %}
+      <ul class="space-y-4">
+        {% for review in reviews %}
+          <li class="p-4 border rounded shadow">
+            <div class="flex justify-between items-center mb-2">
+              <strong>{{ review.user.username }}</strong>
+              <span class="text-yellow-500 font-semibold">Rating: {{ review.rating }}/5</span>
+            </div>
+            <p class="mb-2">{{ review.comment }}</p>
+            <small class="text-gray-500">Đánh giá lúc {{ review.created_at|date:"d/m/Y H:i" }}</small>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+    {% endif %}
+  </div>
+{% endblock %}

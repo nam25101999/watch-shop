@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Banner, StaticPage
+from django.utils.translation import gettext_lazy as _
 
 # Hiển thị tất cả banner đang hoạt động (is_active=True)
 def homepage_view(request):

@@ -5,6 +5,7 @@ from django.contrib import messages
 from .forms import CustomUserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from .forms import UserUpdateForm
 
 
 def register_view(request):
@@ -35,11 +36,31 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'users/login.html', {'form': form})
-
 @login_required
 def account_view(request):
     user = request.user
     return render(request, 'users/account.html', {'user': user})
+
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from .forms import UserUpdateForm
+
+@login_required
+def update_account_view(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Thông tin của bạn đã được cập nhật.')
+            return redirect('users:account')
+    else:
+        form = UserUpdateForm(instance=user)
+
+    return render(request, 'users/update_account.html', {'form': form})
+
 
 def logout_view(request):
     logout(request)

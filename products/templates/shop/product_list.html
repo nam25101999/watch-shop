@@ -8,6 +8,8 @@
 
 <!-- Bộ lọc sản phẩm -->
 <form method="get" class="mb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+
+  <!-- Thương hiệu -->
   <select name="brand" class="border p-2 rounded">
     <option value="">Thương hiệu</option>
     {% for brand in brands %}
@@ -17,6 +19,7 @@
     {% endfor %}
   </select>
 
+  <!-- Danh mục -->
   <select name="category" class="border p-2 rounded">
     <option value="">Danh mục</option>
     {% for category in categories %}
@@ -26,6 +29,7 @@
     {% endfor %}
   </select>
 
+  <!-- Giới tính -->
   <select name="gender" class="border p-2 rounded">
     <option value="">Giới tính</option>
     <option value="male" {% if request.GET.gender == "male" %}selected{% endif %}>Nam</option>
@@ -33,21 +37,93 @@
     <option value="unisex" {% if request.GET.gender == "unisex" %}selected{% endif %}>Unisex</option>
   </select>
 
+  <!-- Giá -->
   <div class="flex gap-2">
     <input type="number" name="min_price" placeholder="Giá từ" value="{{ request.GET.min_price }}" class="border p-2 w-1/2 rounded" />
     <input type="number" name="max_price" placeholder="Đến" value="{{ request.GET.max_price }}" class="border p-2 w-1/2 rounded" />
   </div>
 
+  <!-- Loại đồng hồ -->
+  <select name="watch_type" class="border p-2 rounded">
+    <option value="">Loại đồng hồ</option>
+    {% for t in watch_types %}
+      <option value="{{ t.id }}" {% if request.GET.watch_type == t.id|stringformat:"s" %}selected{% endif %}>
+        {{ t.name }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <!-- Phong cách -->
+  <select name="style" class="border p-2 rounded">
+    <option value="">Phong cách</option>
+    {% for s in styles %}
+      <option value="{{ s.id }}" {% if request.GET.style == s.id|stringformat:"s" %}selected{% endif %}>
+        {{ s.name }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <!-- Mặt đồng hồ -->
+  <select name="dial" class="border p-2 rounded">
+    <option value="">Mặt đồng hồ</option>
+    {% for d in dials %}
+      <option value="{{ d.id }}" {% if request.GET.dial == d.id|stringformat:"s" %}selected{% endif %}>
+        {{ d.name }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <!-- Chất liệu dây -->
+  <select name="strap_material" class="border p-2 rounded">
+    <option value="">Chất liệu dây</option>
+    {% for s in strap_materials %}
+      <option value="{{ s.id }}" {% if request.GET.strap_material == s.id|stringformat:"s" %}selected{% endif %}>
+        {{ s.name }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <!-- Màu sắc -->
+  <select name="color" class="border p-2 rounded">
+    <option value="">Màu sắc</option>
+    {% for c in colors %}
+      <option value="{{ c.id }}" {% if request.GET.color == c.id|stringformat:"s" %}selected{% endif %}>
+        {{ c.name }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <!-- Kháng nước -->
+  <select name="water_resistance" class="border p-2 rounded">
+    <option value="">Kháng nước</option>
+    {% for w in water_resistances %}
+      <option value="{{ w.id }}" {% if request.GET.water_resistance == w.id|stringformat:"s" %}selected{% endif %}>
+        {{ w.name }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <!-- Sắp xếp -->
+  <select name="sort" class="border p-2 rounded">
+    <option value="">Sắp xếp</option>
+    <option value="name_asc" {% if request.GET.sort == "name_asc" %}selected{% endif %}>Tên A → Z</option>
+    <option value="name_desc" {% if request.GET.sort == "name_desc" %}selected{% endif %}>Tên Z → A</option>
+    <option value="price_asc" {% if request.GET.sort == "price_asc" %}selected{% endif %}>Giá thấp → cao</option>
+    <option value="price_desc" {% if request.GET.sort == "price_desc" %}selected{% endif %}>Giá cao → thấp</option>
+  </select>
+
+  <!-- Nút lọc -->
   <div class="col-span-full">
     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Lọc</button>
     <a href="{% url 'products:product_list' %}" class="ml-4 text-blue-600 underline">Xóa bộ lọc</a>
   </div>
 </form>
 
+
 <!-- Danh sách sản phẩm -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
   {% for product in products %}
-  <div class="border rounded-lg p-4 shadow hover:shadow-lg transition">
+  <div class="border rounded-lg p-4 shadow transition-transform duration-300 hover:shadow-lg hover:scale-105">
     <a href="{% url 'products:product_detail' product.slug %}">
       {% if product.image %}
         <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover rounded-md mb-2" />
@@ -69,4 +145,24 @@
     <p>Không tìm thấy sản phẩm phù hợp.</p>
   {% endfor %}
 </div>
+
+<div class="mt-6 flex justify-center space-x-3">
+  {% if products.has_previous %}
+    <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ products.previous_page_number }}" class="px-3 py-1 border rounded">Trang trước</a>
+  {% endif %}
+
+  <span class="px-3 py-1 border rounded bg-gray-200">{{ products.number }} / {{ products.paginator.num_pages }}</span>
+
+  {% if products.has_next %}
+    <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ products.next_page_number }}" class="px-3 py-1 border rounded">Trang sau</a>
+  {% endif %}
+</div>
+
 {% endblock %}
+
+<script>
+  // Khi thay đổi select sắp xếp, tự động submit form
+  document.getElementById('sortSelect').addEventListener('change', function() {
+    document.getElementById('filterForm').submit();
+  });
+</script>

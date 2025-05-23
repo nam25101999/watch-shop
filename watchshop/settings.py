@@ -28,7 +28,24 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 
 
+USE_I18N = True
+
+LANGUAGE_CODE = 'vi'  # Ngôn ngữ mặc định
+
+LANGUAGES = [
+    ('vi', 'Tiếng Việt'),
+    ('en', 'English'),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
+
+
 # Application definition
+
+
 
 INSTALLED_APPS = [
     'django.contrib.humanize',
@@ -48,6 +65,8 @@ INSTALLED_APPS = [
     'wishlist',
     'reviews',
     'notifications',
+    'messenger',
+    'search',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -81,6 +100,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'products.context_processors.menu_processor',
+                'messenger.context_processors.chat_data',
             ],
         },
     },
