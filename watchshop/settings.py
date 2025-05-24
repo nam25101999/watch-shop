@@ -17,7 +17,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 from decouple import config
 
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', default='your-default-secret-key')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!

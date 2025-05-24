@@ -1,12 +1,9 @@
 from django.contrib import admin
 from .models import (
     Brand, Category, Product, ProductImage,
-    WatchType, Style, Dial, StrapMaterial, Color, WaterResistance,
-    Movement, Glass, CaseDiameter, SpecialEdition, DialShape,
-    Feature, Origin, SortOrder
 )
 
-# Đăng ký các model phụ để quản lý dễ dàng nếu muốn
+# Đăng ký Brand, Category để dễ chọn trong Product
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'origin')
@@ -17,84 +14,34 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     search_fields = ('name',)
 
-@admin.register(WatchType)
-class WatchTypeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-@admin.register(Style)
-class StyleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-@admin.register(Dial)
-class DialAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-@admin.register(StrapMaterial)
-class StrapMaterialAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-@admin.register(Color)
-class ColorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-@admin.register(WaterResistance)
-class WaterResistanceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-@admin.register(Movement)
-class MovementAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-@admin.register(Glass)
-class GlassAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-@admin.register(CaseDiameter)
-class CaseDiameterAdmin(admin.ModelAdmin):
-    list_display = ('id', 'size')
-
-@admin.register(SpecialEdition)
-class SpecialEditionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-@admin.register(DialShape)
-class DialShapeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-@admin.register(Feature)
-class FeatureAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-@admin.register(Origin)
-class OriginAdmin(admin.ModelAdmin):
-    list_display = ('id', 'country')
-
-@admin.register(SortOrder)
-class SortOrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'order', 'description')
-    ordering = ('order',)
-
-
-# Inline để quản lý hình ảnh trong trang chỉnh sửa sản phẩm
+# Inline quản lý hình ảnh bổ sung cho sản phẩm
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-    extra = 1
+    extra = 1  # Số form trống để thêm ảnh
+    fields = ('image',)
+    readonly_fields = ()
 
-
+# Admin cho sản phẩm
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'name', 'brand', 'category', 'gender', 'price', 
-        'discount_price', 'stock', 'is_featured', 'created_at'
+        'stock', 'created_at'
     )
-    list_filter = (
-        'brand', 'category', 'gender', 'is_featured', 'watch_type',
-        'style', 'dial', 'strap_material', 'color', 'water_resistance',
-        'movement', 'glass', 'case_diameter', 'special_edition',
-        'dial_shape', 'feature', 'origin',
-    )
+    list_filter = ('brand', 'category', 'gender')
     search_fields = ('name', 'description', 'specifications')
     ordering = ('-created_at',)
+
+    # Các trường hiển thị trong form tạo/sửa sản phẩm
+    fields = (
+        'name', 'slug', 'brand', 'category', 'gender',
+        'price', 'discount_price', 'stock',
+        'description', 'specifications',
+        'image',  # Ảnh chính
+    )
+    readonly_fields = ('slug',)  # Slug tự động tạo, không sửa thủ công
+
     inlines = [ProductImageInline]
-    prepopulated_fields = {"slug": ("name",)}  # Tự động tạo slug từ tên
+
+    prepopulated_fields = {"slug": ("name",)}  # Tạo slug tự động
 
