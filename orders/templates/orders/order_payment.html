@@ -32,12 +32,34 @@
   {% csrf_token %}
 
   <div>
-    <label for="payment_method" class="block mb-2 font-semibold">Phương thức thanh toán:</label>
-    <select id="payment_method" name="payment_method" class="px-4 py-2 border border-gray-300 rounded w-full">
-      <option value="cod">Thanh toán khi nhận hàng (COD)</option>
-      <option value="bank">Chuyển khoản ngân hàng</option>
-      <option value="momo">Ví MoMo</option>
-    </select>
+    <div class="space-y-2">
+      <p class="block mb-2 font-semibold">Phương thức thanh toán:</p>
+      <div class="flex gap-4">
+        <a href="?method=cod" class="payment-method-btn px-4 py-2 border rounded text-center {% if selected_method == 'cod' %}bg-blue-500 text-white{% else %}bg-gray-100 hover:bg-gray-200{% endif %}" data-method="cod">
+          COD
+        </a>
+        <a href="?method=bank" class="payment-method-btn px-4 py-2 border rounded text-center {% if selected_method == 'bank' %}bg-blue-500 text-white{% else %}bg-gray-100 hover:bg-gray-200{% endif %}" data-method="bank">
+          Chuyển khoản
+        </a>
+        <a href="?method=momo" class="payment-method-btn px-4 py-2 border rounded text-center {% if selected_method == 'momo' %}bg-blue-500 text-white{% else %}bg-gray-100 hover:bg-gray-200{% endif %}" data-method="momo">
+          Ví MoMo
+        </a>
+      </div>
+      <input type="hidden" name="payment_method" id="payment_method" value="{{ selected_method }}">
+    </div>
+  </div>
+
+  <!-- Thông tin hướng dẫn chuyển khoản ngân hàng -->
+  <div id="bank-transfer-container" class="{% if selected_method == 'bank' %}block{% else %}hidden{% endif %} border p-4 rounded bg-gray-50 mt-4">
+    <h3 class="font-semibold mb-2">Hướng dẫn chuyển khoản ngân hàng</h3>
+    <p>Vui lòng chuyển tiền vào tài khoản:</p>
+    <ul class="list-disc ml-5">
+      <li>Ngân hàng: ABC Bank</li>
+      <li>Số tài khoản: 123456789</li>
+      <li>Chủ tài khoản: Công ty XYZ</li>
+      <li>Nội dung chuyển khoản: Mã đơn hàng #{{ order.id }}</li>
+    </ul>
+    <p>Sau khi chuyển khoản vui lòng giữ lại biên lai và xác nhận với chúng tôi.</p>
   </div>
 
   <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded">
@@ -45,3 +67,38 @@
   </button>
 </form>
 {% endblock %}
+
+<script>
+  const buttons = document.querySelectorAll('.payment-method-btn');
+  const hiddenInput = document.getElementById('payment_method');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      // Xóa class active khỏi tất cả nút
+      buttons.forEach(btn => btn.classList.remove('bg-blue-500', 'text-white'));
+
+      // Gán class active cho nút được chọn
+      this.classList.add('bg-blue-500', 'text-white');
+
+      // Cập nhật giá trị ẩn
+      const method = this.dataset.method;
+      hiddenInput.value = method;
+
+      // Hiển thị nội dung phù hợp nếu có
+      toggleBankTransfer(method);
+    });
+  });
+
+  function toggleBankTransfer(method) {
+    const bankInfo = document.getElementById('bank-transfer-container');
+    if (bankInfo) {
+      if (method === 'bank') {
+        bankInfo.classList.remove('hidden');
+      } else {
+        bankInfo.classList.add('hidden');
+      }
+    }
+  }
+</script>

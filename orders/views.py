@@ -109,3 +109,36 @@ def order_success(request):
 def order_detail(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
     return render(request, 'orders/order_detail.html', {'order': order})
+
+def payment_view(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    order_items = order.items.all()
+    total = order.total
+
+    if request.method == 'POST':
+        payment_method = request.POST.get('payment_method', 'cod')
+        order.payment_method = payment_method
+        order.payment_status = 'unpaid'  # Mặc định chưa thanh toán, có thể thay đổi logic nếu muốn
+        order.save()
+
+        messages.success(request, 'Phương thức thanh toán đã được cập nhật. Vui lòng thực hiện thanh toán theo hướng dẫn.')
+
+        # Có thể redirect đến trang xác nhận hoặc trang thông tin thanh toán
+        return redirect('payment_confirmation', order_id=order.id)
+
+    # Lấy param để highlight button nếu load lại trang có method query param
+    method = request.GET.get('method', 'cod')
+
+    return render(request, 'payment.html', {
+        'order': order,
+        'order_items': order_items,
+        'total': total,
+        'selected_method': method,
+    })
+
+
+def payment_confirmation(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, 'orders/payment_confirmation.html', {
+        'order': order,
+    })
