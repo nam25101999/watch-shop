@@ -1,11 +1,10 @@
+# reviews/forms.py
 from django import forms
 from .models import Review
 
 class ReviewForm(forms.ModelForm):
+    content = forms.CharField(widget=forms.Textarea(attrs={'rows': 4}), label="Nội dung đánh giá")
+
     class Meta:
         model = Review
-        fields = ['rating', 'comment']
-        widgets = {
-            'rating': forms.NumberInput(attrs={'min':1, 'max':5}),
-            'comment': forms.Textarea(attrs={'rows':4}),
-        }
+        fields = ['content']

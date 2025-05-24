@@ -3,6 +3,10 @@ from .models import Brand, Category, Product
 from django.shortcuts import render
 from .models import Product, Brand, Category
 from django.core.paginator import Paginator
+from reviews.forms import ReviewForm
+from reviews.models import Review
+from django.shortcuts import render, get_object_or_404, redirect
+
 
 from django.core.paginator import Paginator
 from django.shortcuts import render
@@ -158,11 +162,33 @@ def product_list(request):
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
-    # Lấy thêm ảnh phụ nếu có
     extra_images = product.images.all()
+
+    # Lấy danh sách review đã phân trang (5 review/trang)
+    reviews_list = Review.objects.filter(product=product).order_by('-created_at')
+    paginator = Paginator(reviews_list, 5)
+    page_number = request.GET.get('page')
+    reviews = paginator.get_page(page_number)
+
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return redirect('login')  # hoặc trang login của bạn
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.product = product
+            review.save()
+            # Redirect về chính trang chi tiết sản phẩm (để tránh resubmission form)
+            return redirect('products:product_detail', slug=product.slug)
+    else:
+        form = ReviewForm()
+
     context = {
         'product': product,
         'extra_images': extra_images,
+        'reviews': reviews,
+        'form': form,
     }
     return render(request, 'shop/product_detail.html', context)
 
@@ -179,3 +205,26 @@ def category_list(request):
         'categories': categories,
     }
     return render(request, 'shop/category_list.html', context)
+
+from django.core.paginator import Paginator
+
+def product_reviews(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    reviews_list = product.reviews.all().order_by('-created_at')
+
+    paginator = Paginator(reviews_list, 5)  # 5 đánh giá 1 trang
+    page_number = request.GET.get('page')
+    reviews = paginator.get_page(page_number)
+
+    # Nếu muốn hiển thị form thêm đánh giá trong cùng trang
+    if request.user.is_authenticated:
+        form = ReviewForm()
+    else:
+        form = None
+
+    return render(request, 'products/product_detail.html', {
+        'product': product,
+        'reviews': reviews,
+        'form': form,
+    })
+
