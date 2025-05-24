@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load currency_filters %}
 
 {% block title %}Danh sách sản phẩm{% endblock %}
 
@@ -18,126 +19,6 @@
       <label class="flex items-center space-x-2 mb-1">
         <input type="checkbox" name="brand" value="{{ brand.id }}" {% if request.GET.brand == brand.id|stringformat:"s" %}checked{% endif %} />
         <span>{{ brand.name }}</span>
-      </label>
-      {% endfor %}
-    </div>
-
-    <!-- Mức giá -->
-    <div>
-      <h3 class="font-semibold mb-2">Mức giá</h3>
-      {% for range in price_ranges %}
-      <label class="flex items-center space-x-2 mb-1">
-        <input type="radio" name="price" value="{{ range.id }}" {% if request.GET.price == range.id|stringformat:"s" %}checked{% endif %} />
-        <span>{{ range.label }}</span>
-      </label>
-      {% endfor %}
-    </div>
-
-    <!-- Giới tính -->
-    <div>
-      <h3 class="font-semibold mb-2">Giới tính</h3>
-      <label class="block"><input type="radio" name="gender" value="male" {% if request.GET.gender == "male" %}checked{% endif %}> Nam</label>
-      <label class="block"><input type="radio" name="gender" value="female" {% if request.GET.gender == "female" %}checked{% endif %}> Nữ</label>
-      <label class="block"><input type="radio" name="gender" value="unisex" {% if request.GET.gender == "unisex" %}checked{% endif %}> Unisex</label>
-    </div>
-
-    <!-- Loại máy -->
-    <!-- Bộ máy -->
-    <div>
-      <label class="block font-semibold mb-1">Bộ máy</label>
-      {% for movement in movements %}
-        <label class="flex items-center mb-1">
-          <input type="checkbox" name="movement" value="{{ movement.id }}" {% if request.GET.movement == movement.id|stringformat:"s" %}checked{% endif %} class="mr-2" />
-          {{ movement.name }}
-        </label>
-      {% endfor %}
-    </div>
-
-
-    <!-- Chất liệu dây -->
-    <div>
-      <h3 class="font-semibold mb-2">Chất liệu dây</h3>
-      {% for material in strap_materials %}
-      <label class="block">
-        <input type="checkbox" name="strap_material" value="{{ material.id }}" {% if request.GET.strap_material == material.id|stringformat:"s" %}checked{% endif %}>
-        {{ material.name }}
-      </label>
-      {% endfor %}
-    </div>
-
-    <!-- Mặt kính -->
-    <div>
-      <h3 class="font-semibold mb-2">Mặt kính</h3>
-      {% for g in glass_types %}
-      <label class="block">
-        <input type="checkbox" name="glass" value="{{ g.id }}" {% if request.GET.glass == g.id|stringformat:"s" %}checked{% endif %}>
-        {{ g.name }}
-      </label>
-      {% endfor %}
-    </div>
-
-    <!-- Đường kính mặt -->
-    <div>
-      <h3 class="font-semibold mb-2">Đường kính mặt</h3>
-      {% for size in case_sizes %}
-      <label class="block">
-        <input type="checkbox" name="case_size" value="{{ size.id }}" {% if request.GET.case_size == size.id|stringformat:"s" %}checked{% endif %}>
-        {{ size.label }}
-      </label>
-      {% endfor %}
-    </div>
-
-    <!-- Phiên bản đặc biệt -->
-    <div>
-      <h3 class="font-semibold mb-2">Phiên bản đặc biệt</h3>
-      {% for p in special_versions %}
-      <label class="block">
-        <input type="checkbox" name="special" value="{{ p.id }}" {% if request.GET.special == p.id|stringformat:"s" %}checked{% endif %}>
-        {{ p.name }}
-      </label>
-      {% endfor %}
-    </div>
-
-    <!-- Mức chống nước -->
-    <div>
-      <h3 class="font-semibold mb-2">Mức chống nước</h3>
-      {% for w in water_resistances %}
-      <label class="block">
-        <input type="checkbox" name="water" value="{{ w.id }}" {% if request.GET.water == w.id|stringformat:"s" %}checked{% endif %}>
-        {{ w.name }}
-      </label>
-      {% endfor %}
-    </div>
-
-    <!-- Hình dạng mặt số -->
-    <div>
-      <h3 class="font-semibold mb-2">Hình dạng mặt số</h3>
-      {% for h in shapes %}
-      <label class="block">
-        <input type="checkbox" name="shape" value="{{ h.id }}" {% if request.GET.shape == h.id|stringformat:"s" %}checked{% endif %}>
-        {{ h.name }}
-      </label>
-      {% endfor %}
-    </div>
-
-    <!-- Tính năng -->
-    <div>
-      <h3 class="font-semibold mb-2">Tính năng</h3>
-      {% for t in features %}
-      <label class="block">
-        <input type="checkbox" name="feature" value="{{ t.id }}" {% if request.GET.feature == t.id|stringformat:"s" %}checked{% endif %}>
-        {{ t.name }}
-      </label>
-      {% endfor %}
-    </div>
-
-    <!-- Nguồn gốc -->
-    <div>
-      <h3 class="font-semibold mb-2">Nguồn gốc</h3>
-      {% for origin in origins %}
-      <label class="block">
-        <input type="checkbox" name="origin" value="{{ origin.id }}" {% if request.GET.origin == origin.id|stringformat:"s" %}checked{% endif %}>
-        {{ origin.name }}
       </label>
       {% endfor %}
     </div>
@@ -178,10 +59,10 @@
           </a>
           <p class="text-yellow-600 font-bold mt-1">
             {% if product.discount_price %}
-              <span class="line-through text-gray-400 mr-2">{{ product.price }}₫</span>
-              {{ product.discount_price }}₫
+              <span class="line-through text-gray-400 mr-2">{{ product.price|currency_vnd }}</span>
+              {{ product.discount_price|currency_vnd }}
             {% else %}
-              {{ product.price }}₫
+              {{ product.price|currency_vnd }}
             {% endif %}
           </p>
         </div>

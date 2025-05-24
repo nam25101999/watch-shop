@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-
 {% load static %}
+{% load currency_filters %}  {# Sử dụng filter đã tạo #}
 
 {% block title %}{{ product.name }}{% endblock %}
 
@@ -29,10 +29,10 @@
     <div class="md:w-1/2">
       <p class="text-yellow-600 text-2xl font-bold mb-4">
         {% if product.discount_price %}
-          <span class="line-through text-gray-400 mr-2">{{ product.price }}₫</span>
-          {{ product.discount_price }}₫
+          <span class="line-through text-gray-400 mr-2">{{ product.price|currency_vnd }}</span>
+          {{ product.discount_price|currency_vnd }}
         {% else %}
-          {{ product.price }}₫
+          {{ product.price|currency_vnd }}
         {% endif %}
       </p>
 
