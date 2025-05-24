@@ -1,47 +1,25 @@
 from django.contrib import admin
-from .models import (
-    Brand, Category, Product, ProductImage,
-)
+from .models import Product, ProductImage, Brand
 
-# Đăng ký Brand, Category để dễ chọn trong Product
-@admin.register(Brand)
-class BrandAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'origin')
-    search_fields = ('name', 'origin')
-
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-    search_fields = ('name',)
-
-# Inline quản lý hình ảnh bổ sung cho sản phẩm
-class ProductImageInline(admin.TabularInline):
-    model = ProductImage
-    extra = 1  # Số form trống để thêm ảnh
-    fields = ('image',)
-    readonly_fields = ()
-
-# Admin cho sản phẩm
-@admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = (
-        'id', 'name', 'brand', 'category', 'gender', 'price', 
-        'stock', 'created_at'
-    )
-    list_filter = ('brand', 'category', 'gender')
+    list_display = ('name', 'brand', 'price', 'discount_price', 'stock', 'image_tag')
+    readonly_fields = ('image_tag', 'created_at')
     search_fields = ('name', 'description', 'specifications')
-    ordering = ('-created_at',)
+    list_filter = ('brand',)
 
-    # Các trường hiển thị trong form tạo/sửa sản phẩm
-    fields = (
-        'name', 'slug', 'brand', 'category', 'gender',
-        'price', 'discount_price', 'stock',
-        'description', 'specifications',
-        'image',  # Ảnh chính
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'brand', 'price', 'discount_price', 'stock', 'image', 'image_tag', 'description', 'specifications')
+        }),
     )
-    readonly_fields = ('slug',)  # Slug tự động tạo, không sửa thủ công
 
-    inlines = [ProductImageInline]
+    def image_tag(self, obj):
+        if obj.image:
+            return f'<img src="{obj.image.url}" width="100" height="100" />'
+        return '(No Image)'
+    image_tag.short_description = 'Hình ảnh'
+    image_tag.allow_tags = True
 
-    prepopulated_fields = {"slug": ("name",)}  # Tạo slug tự động
-
+admin.site.register(Product, ProductAdmin)
+admin.site.register(ProductImage)
+admin.site.register(Brand)
