@@ -1,4 +1,5 @@
-ALLOWED_HOSTS = ['nhokvodanh2510.pythonanywhere.com']
+ALLOWED_HOSTS = ['nhokvodanh2510.pythonanywhere.com', '127.0.0.1', 'localhost']
+from django.utils.translation import gettext_lazy as _
 
 from pathlib import Path
 
@@ -25,15 +26,23 @@ DEBUG = True
 # settings.py
 
 # Ngôn ngữ mặc định
-LANGUAGE_CODE = 'vi'  # hoặc 'en', tùy bạn
+LANGUAGE_CODE = 'vi'
 
 # Bật dịch ngôn ngữ
 USE_I18N = True
 
 # Danh sách ngôn ngữ hỗ trợ
 LANGUAGES = [
-    ('vi', 'Tiếng Việt'),
-    ('en', 'English'),
+    ('vi', _('Vietnamese')),
+    ('en', _('English')),
+    ('fr', _('French')),
+    ('de', _('German')),
+    ('es', _('Spanish')),
+    ('ja', _('Japanese')),
+    ('ko', _('Korean')),
+    ('zh-hans', _('Chinese (Simplified)')),
+    ('ru', _('Russian')),
+    ('it', _('Italian')),
 ]
 
 LOCALE_PATHS = [
@@ -117,23 +126,23 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 from decouple import config
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 #DATABASES = {
 #    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': config('DB_NAME'),
-#        'USER': config('DB_USER'),
-#        'PASSWORD': config('DB_PASSWORD'),
-#        'HOST': config('DB_HOST'),
-#        'PORT': config('DB_PORT'),
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
 #    }
 #}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

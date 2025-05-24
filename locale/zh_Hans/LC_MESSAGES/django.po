@@ -8,151 +8,154 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-24 08:19+0700\n"
-"PO-Revision-Date: 2025-05-24 08:00+0700\n"
-"Last-Translator: Translator Team <contact@example.com>\n"
-"Language-Team: English <en@li.org>\n"
-"Language: en\n"
+"PO-Revision-Date: 2025-05-24 08:50+0800\n"
+"Last-Translator: 翻译团队 <contact@example.cn>\n"
+"Language-Team: Chinese (Simplified) <zh@li.org>\n"
+"Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: .\templates\partials\footer.html:9
 msgid "NHN Shop"
-msgstr "NHN Shop"
+msgstr "NHN 商店"
 
 #: .\templates\partials\footer.html:11
-msgid "Chuyên cung cấp sản phẩm chất lượng với giá cả hợp lý, phục vụ tận tâm và giao hàng toàn quốc."
-msgstr "Specializing in quality products with reasonable prices, dedicated service, and nationwide delivery."
+msgid ""
+"Chuyên cung cấp sản phẩm chất lượng với giá cả hợp lý, phục vụ tận tâm và "
+"giao hàng toàn quốc."
+msgstr "专注提供优质产品，价格合理，贴心服务，全国配送。"
 
 #: .\templates\partials\footer.html:17
 msgid "Liên kết nhanh"
-msgstr "Quick Links"
+msgstr "快速链接"
 
 #: .\templates\partials\footer.html:19 .\templates\partials\header.html:50
 msgid "Giới thiệu"
-msgstr "About Us"
+msgstr "关于我们"
 
 #: .\templates\partials\footer.html:20 .\templates\partials\header.html:15
 msgid "Sản phẩm"
-msgstr "Products"
+msgstr "产品"
 
-#: .\templates\partials\footer.html:21 .\templates\partials\footer.html:39 .\templates\partials\header.html:55
+#: .\templates\partials\footer.html:21 .\templates\partials\footer.html:39
+#: .\templates\partials\header.html:55
 msgid "Liên hệ"
-msgstr "Contact"
+msgstr "联系方式"
 
 #: .\templates\partials\footer.html:22
 msgid "Câu hỏi thường gặp"
-msgstr "Frequently Asked Questions"
+msgstr "常见问题"
 
 #: .\templates\partials\footer.html:28
 msgid "Hỗ trợ khách hàng"
-msgstr "Customer Support"
+msgstr "客户支持"
 
 #: .\templates\partials\footer.html:30
 msgid "Chính sách vận chuyển"
-msgstr "Shipping Policy"
+msgstr "运输政策"
 
 #: .\templates\partials\footer.html:31
 msgid "Chính sách đổi trả"
-msgstr "Return Policy"
+msgstr "退换政策"
 
 #: .\templates\partials\footer.html:32
 msgid "Chính sách bảo mật"
-msgstr "Privacy Policy"
+msgstr "隐私政策"
 
 #: .\templates\partials\footer.html:33
 msgid "Điều khoản dịch vụ"
-msgstr "Terms of Service"
+msgstr "服务条款"
 
 #: .\templates\partials\footer.html:40
 msgid "Địa chỉ: 123 Đường ABC, Quận 1, TP.HCM"
-msgstr "Address: 123 ABC Street, District 1, Ho Chi Minh City"
+msgstr "地址：胡志明市第一郡ABC街123号"
 
 #: .\templates\partials\footer.html:41
 msgid "Điện thoại: 0123 456 789"
-msgstr "Phone: 0123 456 789"
+msgstr "电话：0123 456 789"
 
 #: .\templates\partials\footer.html:42
 msgid "Email: support@nhnshop.vn"
-msgstr "Email: support@nhnshop.vn"
+msgstr "电子邮件：support@nhnshop.vn"
 
 #: .\templates\partials\footer.html:60
 msgid "WatchShop. All rights reserved."
-msgstr "WatchShop. All rights reserved."
+msgstr "WatchShop。版权所有。"
 
 #: .\templates\partials\header.html:20
 msgid "Menu"
-msgstr "Menu"
+msgstr "菜单"
 
 #: .\templates\partials\header.html:25
 msgid "Thương hiệu"
-msgstr "Brand"
+msgstr "品牌"
 
 #: .\templates\partials\header.html:33
 msgid "Chưa có thương hiệu"
-msgstr "No brands available"
+msgstr "暂无品牌"
 
 #: .\templates\partials\header.html:37
 msgid "Danh mục"
-msgstr "Category"
+msgstr "分类"
 
 #: .\templates\partials\header.html:45
 msgid "Chưa có danh mục"
-msgstr "No categories available"
+msgstr "暂无分类"
 
 #: .\templates\partials\header.html:62
 msgid "Tìm sản phẩm..."
-msgstr "Search products..."
+msgstr "搜索产品..."
 
 #: .\templates\partials\header.html:63
 msgid "Tìm"
-msgstr "Search"
+msgstr "搜索"
 
 #: .\templates\partials\header.html:120
 msgid "Đăng nhập"
-msgstr "Login"
+msgstr "登录"
 
 #: .\templates\partials\header.html:123
 msgid "Đăng ký"
-msgstr "Register"
+msgstr "注册"
 
 #: .\watchshop\settings.py:36
 msgid "Vietnamese"
-msgstr "Vietnamese"
+msgstr "越南语"
 
 #: .\watchshop\settings.py:37
 msgid "English"
-msgstr "English"
+msgstr "英语"
 
 #: .\watchshop\settings.py:38
 msgid "French"
-msgstr "French"
+msgstr "法语"
 
 #: .\watchshop\settings.py:39
 msgid "German"
-msgstr "German"
+msgstr "德语"
 
 #: .\watchshop\settings.py:40
 msgid "Spanish"
-msgstr "Spanish"
+msgstr "西班牙语"
 
 #: .\watchshop\settings.py:41
 msgid "Japanese"
-msgstr "Japanese"
+msgstr "日语"
 
 #: .\watchshop\settings.py:42
 msgid "Korean"
-msgstr "Korean"
+msgstr "韩语"
 
 #: .\watchshop\settings.py:43
 msgid "Chinese (Simplified)"
-msgstr "Chinese (Simplified)"
+msgstr "中文（简体）"
 
 #: .\watchshop\settings.py:44
 msgid "Russian"
-msgstr "Russian"
+msgstr "俄语"
 
 #: .\watchshop\settings.py:45
 msgid "Italian"
-msgstr "Italian"
+msgstr "意大利语"

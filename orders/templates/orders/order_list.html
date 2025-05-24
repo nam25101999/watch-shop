@@ -13,6 +13,30 @@
       <div class="border border-gray-300 rounded p-4 mb-6 shadow-sm">
         <h2 class="text-xl font-semibold mb-2">Đơn hàng #{{ order.id }}</h2>
         <p class="text-gray-600">Ngày đặt: {{ order.created_at|date:"d/m/Y H:i" }}</p>
+        
+        <p class="text-sm text-gray-600">
+          Trạng thái đơn hàng: 
+          {% if order.status == "pending" %}
+            <span class="text-yellow-600">Đang xử lý</span>
+          {% elif order.status == "shipped" %}
+            <span class="text-green-600">Đã giao hàng</span>
+          {% elif order.status == "cancelled" %}
+            <span class="text-red-600">Đã huỷ</span>
+          {% endif %}
+        </p>
+
+        <p class="mt-2 text-sm font-medium">
+          Trạng thái thanh toán:
+          {% if order.payment_status == "paid" %}
+            <span class="text-green-600 font-semibold">Đã thanh toán</span>
+          {% elif order.payment_status == "refunded" %}
+            <span class="text-blue-600 font-semibold">Đã hoàn tiền</span>
+          {% else %}
+            <span class="text-red-600 font-semibold">Chưa thanh toán</span>
+          {% endif %}
+        </p>
+
+
 
         <table class="w-full mt-4 border border-gray-200 text-left">
           <thead class="bg-gray-100">
@@ -39,11 +63,20 @@
           {{ order.items.all|sum_total_price|floatformat:0|intcomma }}₫
         </p>
       </div>
-      <a href="{% url 'orders:order_detail' order.id %}">Chi tiết đơn hàng</a>
-      <a href="{% url 'orders:edit_shipping_address' order.id %}">Chỉnh sửa địa chỉ</a>
+      <div class="flex gap-3 mt-4">
+        <a href="{% url 'orders:order_detail' order.id %}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow">
+          Chi tiết đơn hàng
+        </a>
+        <a href="{% url 'orders:edit_shipping_address' order.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow">
+          Chỉnh sửa địa chỉ
+        </a>
+        <a href="{% url 'orders:order_payment' order.id %}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow">
+          Thanh toán
+        </a>
+      </div>
+
 
     {% endfor %}
-    <a href="{% url 'orders:checkout' %}" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded font-semibold">Thanh toán</a>
   {% else %}
     <p>Bạn chưa có đơn hàng nào.</p>
     <a href="{% url 'products:product_list' %}" class="text-blue-600 underline">Tiếp tục mua sắm</a>

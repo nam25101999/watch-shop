@@ -81,10 +81,19 @@
         <form action="{% url 'set_language' %}" method="post">
           {% csrf_token %}
           <select name="language" onchange="this.form.submit()">
-              <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
-              <option value="vi" {% if LANGUAGE_CODE == 'vi' %}selected{% endif %}>Tiếng Việt</option>
+            <option value="vi" {% if LANGUAGE_CODE == 'vi' %}selected{% endif %}>Vietnamese</option>
+            <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+            <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>French</option>
+            <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>German</option>
+            <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Spanish</option>
+            <option value="ja" {% if LANGUAGE_CODE == 'ja' %}selected{% endif %}>Japanese</option>
+            <option value="ko" {% if LANGUAGE_CODE == 'ko' %}selected{% endif %}>Korean</option>
+            <option value="zh-hans" {% if LANGUAGE_CODE == 'zh-hans' %}selected{% endif %}>Chinese (Simplified)</option>
+            <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Russian</option>
+            <option value="it" {% if LANGUAGE_CODE == 'it' %}selected{% endif %}>Italian</option>
           </select>
         </form>
+
         <!-- Tài khoản -->
         {% if request.user.is_authenticated %}
           <div x-data="{ open: false }" class="relative inline-block text-left">

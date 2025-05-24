@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<h2 class="text-2xl font-semibold mb-4">Thanh toán cho Đơn hàng #{{ order.id }}</h2>
+<p class="mb-6">Ngày đặt: {{ order.created_at|date:"d/m/Y H:i" }}</p>
+
+<table class="min-w-full border border-gray-300 mb-6">
+  <thead>
+    <tr class="bg-gray-100 text-left">
+      <th class="px-4 py-2 border border-gray-300">Sản phẩm</th>
+      <th class="px-4 py-2 border border-gray-300">Số lượng</th>
+      <th class="px-4 py-2 border border-gray-300">Giá</th>
+      <th class="px-4 py-2 border border-gray-300">Tổng</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in order_items %}
+    <tr class="border border-gray-300">
+      <td class="px-4 py-2 border border-gray-300">{{ item.product.name }}</td>
+      <td class="px-4 py-2 border border-gray-300">{{ item.quantity }}</td>
+      <td class="px-4 py-2 border border-gray-300">{{ item.price|intcomma }}₫</td>
+      <td class="px-4 py-2 border border-gray-300">{{ item.price|floatformat:0|intcomma }}₫</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<p class="text-lg font-bold mb-6">Tổng cộng: {{ total|intcomma }}₫</p>
+
+<form method="post" class="space-y-4 mb-6">
+  {% csrf_token %}
+
+  <div>
+    <label for="payment_method" class="block mb-2 font-semibold">Phương thức thanh toán:</label>
+    <select id="payment_method" name="payment_method" class="px-4 py-2 border border-gray-300 rounded w-full">
+      <option value="cod">Thanh toán khi nhận hàng (COD)</option>
+      <option value="bank">Chuyển khoản ngân hàng</option>
+      <option value="momo">Ví MoMo</option>
+    </select>
+  </div>
+
+  <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded">
+    Xác nhận thanh toán
+  </button>
+</form>
+{% endblock %}
