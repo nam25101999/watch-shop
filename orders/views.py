@@ -142,3 +142,59 @@ def payment_confirmation(request, order_id):
     return render(request, 'orders/payment_confirmation.html', {
         'order': order,
     })
+
+@login_required
+def payment_view(request, order_id):
+    # Lấy đơn hàng theo order_id và user hiện tại
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    
+    # Lấy các món hàng thuộc đơn hàng
+    order_items = OrderItem.objects.filter(order=order)
+    
+    # Tổng tiền được lưu trong order.total
+    total = order.total
+    
+    if request.method == 'POST':
+        # Lấy phương thức thanh toán từ form gửi lên
+        payment_method = request.POST.get('payment_method', 'cod')
+        order.payment_method = payment_method
+        order.payment_status = 'unpaid'  # Mặc định trạng thái chưa thanh toán
+        order.save()
+        
+        messages.success(request, 'Phương thức thanh toán đã được cập nhật. Vui lòng thực hiện thanh toán theo hướng dẫn.')
+        
+        # Chuyển hướng đến trang xác nhận thanh toán (có thể tuỳ chỉnh)
+        return redirect('payment_confirmation', order_id=order.id)
+    
+    # Nếu GET request, hiển thị trang thanh toán với dữ liệu cần thiết
+    return render(request, 'orders/payment.html', {
+        'order': order,
+        'order_items': order_items,
+        'total': total,
+    })
+from django.shortcuts import render, get_object_or_404
+
+def payment_bank(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+
+    # Lấy tổng tiền từ order
+    total = order.total
+
+    if request.method == "POST":
+        # Xử lý xác nhận thanh toán chuyển khoản
+        # VD: lưu trạng thái đơn hàng, gửi mail, ...
+        pass
+
+    return render(request, 'orders/payment_bank.html', {
+        'order': order,
+        'total': total,
+    })
+
+def payment_cod(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    # logic xử lý thanh toán COD
+    return render(request, 'orders/payment_cod.html', {'order': order})
+def payment_momo(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    # logic xử lý thanh toán ví MoMo
+    return render(request, 'orders/payment_momo.html', {'order': order})

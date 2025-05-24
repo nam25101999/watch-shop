@@ -25,39 +25,76 @@
   </div>
 
   <!-- Thông tin người nhận -->
-  <div class="mb-6">
-    <h2 class="text-xl font-semibold text-gray-700 mb-3">Thông tin người nhận</h2>
-    <form class="grid grid-cols-1 gap-4">
-      <input type="text" placeholder="Họ và tên" class="border rounded-lg px-4 py-2">
-      <input type="text" placeholder="Số điện thoại" class="border rounded-lg px-4 py-2">
-      <input type="text" placeholder="Địa chỉ giao hàng" class="border rounded-lg px-4 py-2">
-    </form>
-  </div>
-
-  <!-- Phương thức thanh toán -->
-  <div class="mb-6">
-    <h2 class="text-xl font-semibold text-gray-700 mb-3">Phương thức thanh toán</h2>
-    <div class="space-y-2">
-      <label class="flex items-center">
-        <input type="radio" name="payment" class="mr-2" checked>
-        <span>Thanh toán khi nhận hàng (COD)</span>
-      </label>
-      <label class="flex items-center">
-        <input type="radio" name="payment" class="mr-2">
-        <span>Chuyển khoản ngân hàng</span>
-      </label>
-      <label class="flex items-center">
-        <input type="radio" name="payment" class="mr-2">
-        <span>Thanh toán qua ví điện tử (Momo, ZaloPay...)</span>
-      </label>
+  <form method="post" action="{% url 'orders:create_order' %}">
+    {% csrf_token %}
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold text-gray-700 mb-3">Thông tin người nhận</h2>
+      <div class="grid grid-cols-1 gap-4">
+        <input
+          type="text"
+          name="full_name"
+          placeholder="Họ và tên"
+          class="border rounded-lg px-4 py-2"
+          required
+          value="{{ form.full_name.value|default_if_none:'' }}"
+        >
+        <input
+          type="tel"
+          name="phone"
+          placeholder="Số điện thoại"
+          class="border rounded-lg px-4 py-2"
+          required
+          value="{{ form.phone.value|default_if_none:'' }}"
+        >
+        <input
+          type="text"
+          name="address"
+          placeholder="Địa chỉ giao hàng"
+          class="border rounded-lg px-4 py-2"
+          required
+          value="{{ form.address.value|default_if_none:'' }}"
+        >
+      </div>
     </div>
-  </div>
 
-  <!-- Nút đặt hàng -->
-  <div class="text-right">
-    <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg">
-      Xác nhận thanh toán
-    </button>
-  </div>
+    <!-- Phương thức thanh toán -->
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold text-gray-700 mb-3">Phương thức thanh toán</h2>
+      <div class="space-y-2">
+        <a href="{% url 'orders:payment_bank' order.id %}" class="block p-3 border rounded hover:bg-gray-100">
+          Thanh toán khi nhận hàng (COD)
+        </a>
+        <a href="{% url 'orders:payment_bank_transfer' order.id %}" class="block p-3 border rounded hover:bg-gray-100">
+          Chuyển khoản ngân hàng
+        </a>
+        <a href="{% url 'orders:payment_e_wallet' order.id %}" class="block p-3 border rounded hover:bg-gray-100">
+          Thanh toán qua ví điện tử (Momo, ZaloPay...)
+        </a>
+      </div>
+    </div>
+
+
+
+    <!-- Hiển thị lỗi nếu có -->
+    {% if errors %}
+      <div class="mb-4 p-3 bg-red-100 text-red-700 rounded">
+        <ul>
+          {% for error in errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <!-- Nút đặt hàng -->
+    <div class="text-right">
+      <button
+        type="submit"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg"
+      >
+        Xác nhận thanh toán
+      </button>
+    </div>
+  </form>
 </div>
 {% endblock %}

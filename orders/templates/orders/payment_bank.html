@@ -1,10 +1,43 @@
-<div id="bank-info" class="mt-4 bg-blue-50 border border-blue-200 p-4 rounded">
-  <p class="font-semibold text-blue-800">Vui lòng chuyển khoản đến thông tin sau:</p>
-  <ul class="mt-2 text-sm text-blue-700 space-y-1">
-    <li><strong>Ngân hàng:</strong> Vietcombank</li>
-    <li><strong>Chủ tài khoản:</strong> Nguyễn Văn A</li>
-    <li><strong>Số tài khoản:</strong> 0123456789</li>
-    <li><strong>Chi nhánh:</strong> Đà Nẵng</li>
-    <li><strong>Nội dung chuyển khoản:</strong> TT{{ order.id }} - {{ order.user.username }}</li>
-  </ul>
+{% extends "base.html" %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-8 mt-8">
+  <h2 class="text-2xl font-semibold mb-6 text-gray-800">Thanh toán chuyển khoản cho Đơn hàng #{{ order.id }}</h2>
+
+  <p class="text-lg mb-4"><strong>Số tiền cần chuyển:</strong> 
+    <span class="text-red-600 font-bold text-xl">{{ total|intcomma }}₫</span>
+  </p>
+
+  <div class="mb-6">
+    <p class="mb-2">Vui lòng chuyển tiền vào tài khoản:</p>
+    <ul class="list-disc list-inside text-gray-700 space-y-1">
+      <li><strong>Ngân hàng:</strong> ABC Bank</li>
+      <li><strong>Số tài khoản:</strong> 123456789</li>
+      <li><strong>Chủ tài khoản:</strong> Công ty XYZ</li>
+      <li><strong>Nội dung chuyển khoản:</strong> Mã đơn hàng #{{ order.id }}</li>
+    </ul>
+  </div>
+
+  <!-- Phần QR code -->
+  <div class="mb-6 flex justify-center">
+    <img src="{% static 'images/qr_code.png' %}" alt="QR Code Thanh toán" class="w-48 h-48 object-contain shadow-lg rounded-md">
+  </div>
+
+  <form method="post" class="text-center">
+    {% csrf_token %}
+    <button type="submit" 
+      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded shadow transition duration-300">
+      Xác nhận đã chuyển khoản
+    </button>
+  </form>
+
+  <div class="mt-6 text-center">
+    <a href="{% url 'orders:order_detail' order.id %}" 
+       class="text-blue-500 hover:underline font-medium">
+       ← Quay lại chi tiết đơn hàng
+    </a>
+  </div>
 </div>
+{% endblock %}
